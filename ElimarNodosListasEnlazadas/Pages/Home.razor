@@ -1,0 +1,117 @@
+﻿@using ElimarNodosListasEnlazadas.Server;
+@page "/"
+
+<PageTitle>Eliminar Nodos Listas Enlazadas</PageTitle>
+
+<input type="text" @bind="valor" class="form-control" placeholder="Valor a Insertar" />
+<br />
+<button @onclick="AgregarFinal" class="btn btn-primary">Insertar Nodo Al Final</button>
+<button @onclick="AgregarInicio" class="btn btn-primary">Insertar Nodo Al Inicio</button>
+<br />
+<br />
+<button @onclick="EliminarInicio" class="btn btn-primary">Eliminar Nodo Al Inicio</button>
+<button @onclick="EliminarFinal" class="btn btn-primary">Eliminar Nodo Al Final</button>
+<br />
+<br />
+<input type="text" @bind="valorBusqueda" class="form-control" placeholder="Valor de referencia" />
+<br />
+<button @onclick="EliminiarNodoAntesX" class="btn btn-primary">Eliminar antes de un Dato X</button>
+<button @onclick="EliminarNodoDespuesX" class="btn btn-primary">Eliminar después de un Dato X</button>
+<br />
+<br />
+<input type="text" @bind="posicionStr" class="form-control" placeholder="Posición" />
+<br />
+<button @onclick="EliminarEnPosicion" class="btn btn-primary">Eliminar en Posición</button>
+<button @onclick="OrdenarLista" class="btn btn-primary">Ordenar Lista</button>
+
+<br />
+
+<p>@mensaje</p>
+
+<ul class="list-group">
+    @{
+        Nodo nodoTemporal = Lista.PrimerNodo;
+        while (nodoTemporal != null)
+        {
+            <li class="list-group-item">@nodoTemporal.Informacion</li>
+            nodoTemporal = nodoTemporal.Referencia;
+        }
+    }
+</ul>
+<br />
+<br />
+<button @onclick="VaciarLista" class="btn btn-primary">Vaciar Lista</button>
+
+@code {
+    public string valor { get; set; }
+    public string valorBusqueda { get; set; }
+    public string posicionStr { get; set; }
+    public string mensaje { get; set; }
+    public LES Lista { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Lista = new LES();
+        base.OnInitialized();
+    }
+
+    Nodo crearNodo()
+    {
+        return new Nodo(valor);
+    }
+
+
+    public void AgregarFinal()
+    {
+        mensaje = Lista.AgregarNodoFinal(crearNodo());
+    }
+
+    public void AgregarInicio()
+    {
+        mensaje = Lista.AgregarNodoInicio(crearNodo());
+    }
+
+    public void EliminarInicio()
+    {
+        mensaje = Lista.EliminarNodoInicio();
+    }
+
+    public void EliminarFinal()
+    {
+        mensaje = Lista.EliminarNodoFinal();
+    }
+
+    public void EliminiarNodoAntesX()
+    {
+        mensaje = Lista.EliminiarAntesX(valorBusqueda);
+    }
+
+    public void EliminarNodoDespuesX()
+    {
+        mensaje = Lista.EliminarDespuesDatoX(valorBusqueda);
+    }
+
+    public void EliminarEnPosicion()
+    {
+        if (int.TryParse(posicionStr, out int posicion))
+        {
+            mensaje = Lista.EliminarEnPosicion(posicion);
+        }
+        else
+        {
+            mensaje = "Posición inválida";
+        }
+    }
+
+    public void OrdenarLista()
+    {
+        mensaje = Lista.OrdenarLista();
+    }
+
+    public void VaciarLista()
+    {
+        mensaje = Lista.VaciarLista();
+    }
+
+
+}
