@@ -1,18 +1,169 @@
-﻿@page "/counter"
+﻿@using ElimarNodosListasEnlazadas.Server;
+@page "/counter"
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Lista Doblemente Enlazada</PageTitle>
 
-<h1>Counter</h1>
+ <input type= "text" @bind="valor" class="form-control" placeholder="Ingrese un valor"/>
+ <br/>
+<button @onclick="AgregarInicio" class="btn btn-azul-claro">Insertar Nodo Al Inicio</button>
+<button @onclick="AgregarFinal" class="btn btn-azul-claro">Insertar Nodo Al Final</button>
+<br /><br />
+<button @onclick="EliminarInicio" class="btn btn-rojo">Eliminar Nodo Al Inicio</button>
+<button @onclick="EliminarFinal" class="btn btn-rojo">Eliminar Nodo Al Final</button>
+<br /><br />
+<input type="text" @bind="valorBusqueda" class="form-control" placeholder="Valor de Referencia" />
+<br /><br />
+<button @onclick="AntesDatoX" class="btn btn-azul-claro">Insertar Nodo Antedes De Dato X</button>
+<button @onclick="DespuesDatoX" class="btn btn-azul-claro">Insertar Nodo Despues De Dato X</button>
+<button @onclick="Buscar" class="btn btn-azul-claro">Buscar nodo con Dato X</button>
+<br /><br />
+<button @onclick="EliminarConDatoX" class="btn btn-rojo">Eliminar Nodo con Informacion X</button>
+<button @onclick="EliminarAntesDatoX" class="btn btn-rojo">Eliminar Nodo Antes De Dato X</button>
+<button @onclick="EliminarDespuesDatoX" class="btn btn-rojo">Eliminar Nodo Despues De Dato X</button>
+<br /><br />
+<input type="text" @bind="posicion" class="form-control" placeholder="Ingrese Posicion" />
+<br /><br />
+<button @onclick="AntesPosicionDatoX" class="btn btn-azul-claro">Insertar Nodo Antes de Posicion X</button>
+<button @onclick="DespuesPosicionDatoX" class="btn btn-azul-claro">Insertar Nodo Despues de Posicion X</button>
+<br /><br />
+<button @onclick="EliminarAntesPosicionDatoX" class="btn btn-rojo">Eliminar Nodo Antes de Posicion X</button>
+<button @onclick="EliminarDespuesPosicionDatoX"  class="btn btn-rojo">Eliminar Nodo Despues de Posicion X</button>
+<button @onclick="Ordenar" class="btn btn-azul-claro">Ordenar Lista</button>
+<br /><br />
+<p>@mensaje</p>
 
-<p role="status">Current count: @currentCount</p>
+<ul class="list-group">
+    @{
+        NodoD nodoTemporal = Lista.PrimerNodo;
+        while (nodoTemporal != null)
+        {
+            <li class="list-group-item">@nodoTemporal.Informacion</li>
+            nodoTemporal = nodoTemporal.ReferenciaSiguiente;
+        }
+    }
+</ul>
+<br />
+<br />
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button @onclick="VaciarLista" class="btn btn-azul-claro">Vaciar Lista</button>
 
 @code {
-    private int currentCount = 0;
+    public string valor { get; set;}
+    public string valorBusqueda { get; set;}
+    public string posicion { get; set; }
+    public string mensaje { get; set; }
+    public LESD Lista { get; set; }
 
-    private void IncrementCount()
+    protected override void OnInitialized()
     {
-        currentCount++;
+        Lista = new LESD();
+        base.OnInitialized();
     }
+
+    NodoD CrearNodo()
+    {
+        return new NodoD(valor);
+    }
+    public void VaciarLista()
+    {
+        mensaje = Lista.VaciarLista();
+    }
+
+    public void AgregarInicio()
+    {
+        mensaje = Lista.AgregarNodoINicio(CrearNodo());
+    }
+
+    public void AgregarFinal()
+    {
+        mensaje = Lista.AgregarNodoFinal(CrearNodo());
+    }
+
+    public void AntesDatoX()
+    {
+        mensaje = Lista.AntesDatoX(valorBusqueda, CrearNodo());
+    }
+    public void DespuesDatoX()
+    {
+        mensaje = Lista.DespuesDatoX(valorBusqueda, CrearNodo());
+    }
+
+    public void AntesPosicionDatoX()
+    {
+        if(int.TryParse(posicion, out int posicionx))
+        {
+            mensaje = Lista.AgregarAntesPosicionX(posicionx, CrearNodo());
+        }
+        else
+        {
+            mensaje = "Posicion Invalida";
+        }
+    }
+
+    public void DespuesPosicionDatoX()
+    {
+        if(int.TryParse(posicion, out int posicionx))
+        {
+            mensaje = Lista.AgregarDespuesPosicionX(posicionx, CrearNodo());
+        }
+        else
+        {
+            mensaje = "Posicion Invalida";
+        }
+    }
+
+    public void EliminarInicio()
+    {
+        mensaje = Lista.EliminarInicio();
+    }
+    public void EliminarFinal()
+    {
+        mensaje = Lista.EliminarFinal();
+    }
+
+    public void EliminarConDatoX()
+    {
+        mensaje = Lista.EliminarConDatoX(valorBusqueda);
+    }
+
+    public void EliminarAntesDatoX()
+    {
+        mensaje = Lista.EliminarAntesDatoX(valorBusqueda);
+    }
+    public void EliminarDespuesDatoX()
+    {
+        mensaje = Lista.EliminarDespuesDatoX(valorBusqueda);
+    }
+    public void EliminarAntesPosicionDatoX()
+    {
+        if (int.TryParse(posicion, out int posicionx))
+        {
+            mensaje = Lista.EliminarAntesDePosX(posicionx);
+        }
+        else
+        {
+            mensaje = "Posicion Invalida";
+        }
+    }
+    public void EliminarDespuesPosicionDatoX()
+    {
+        if (int.TryParse(posicion, out int posicionx))
+        {
+            mensaje = Lista.EliminarDespuesDePosX(posicionx);
+        }
+        else
+        {
+            mensaje = "Posicion Invalida";
+        }
+    }
+    public void Buscar()
+    {
+        mensaje = Lista.Buscar(valorBusqueda);
+    }
+    public void Ordenar()
+    {
+        mensaje = Lista.OrdenarLista();
+    }
+
+
 }

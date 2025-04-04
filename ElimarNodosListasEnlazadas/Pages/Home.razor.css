@@ -1,0 +1,10 @@
+﻿.btn-azul-claro {
+    background-color: rgb(0, 89, 170) !important;
+    border-color: rgb(0, 89, 170) !important; 
+    color: white; 
+}
+.btn-rojo {
+    background-color: rgb(180, 0, 0) !important;
+    border-color: rgb(180, 0, 0) !important; 
+    color: white;
+}

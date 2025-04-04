@@ -1,28 +1,38 @@
 ﻿@using ElimarNodosListasEnlazadas.Server;
 @page "/"
 
-<PageTitle>Eliminar Nodos Listas Enlazadas</PageTitle>
+<PageTitle>Listas Simplemente Enlazadas</PageTitle>
 
-<input type="text" @bind="valor" class="form-control" placeholder="Valor a Insertar" />
+<input type="text" @bind="valor" class="form-control" placeholder="Ingrese un Valor" />
 <br />
-<button @onclick="AgregarFinal" class="btn btn-primary">Insertar Nodo Al Final</button>
-<button @onclick="AgregarInicio" class="btn btn-primary">Insertar Nodo Al Inicio</button>
+<button @onclick="AgregarFinal" class="btn btn-azul-claro">Insertar Nodo Al Final</button>
+<button @onclick="AgregarInicio" class="btn btn-azul-claro">Insertar Nodo Al Inicio</button>
 <br />
 <br />
-<button @onclick="EliminarInicio" class="btn btn-primary">Eliminar Nodo Al Inicio</button>
-<button @onclick="EliminarFinal" class="btn btn-primary">Eliminar Nodo Al Final</button>
+<button @onclick="EliminarInicio" class="btn btn-rojo">Eliminar Nodo Al Inicio</button>
+<button @onclick="EliminarFinal" class="btn btn-rojo">Eliminar Nodo Al Final</button>
 <br />
 <br />
 <input type="text" @bind="valorBusqueda" class="form-control" placeholder="Valor de referencia" />
 <br />
-<button @onclick="EliminiarNodoAntesX" class="btn btn-primary">Eliminar antes de un Dato X</button>
-<button @onclick="EliminarNodoDespuesX" class="btn btn-primary">Eliminar después de un Dato X</button>
+<button @onclick="AgregarAntesDatoX" class="btn btn-azul-claro">Insertar antes de un Dato X</button>
+<button @onclick="AgregarDespuesDatoX" class="btn btn-azul-claro">Insertar después de un Dato X</button>
+<button @onclick="BuscarElemento" class="btn btn-azul-claro">Buscar Elemento</button>
+<br />
+<br />
+<button @onclick="EliminiarNodoAntesX" class="btn btn-rojo">Eliminar antes de un Dato X</button>
+<button @onclick="EliminarNodoDespuesX" class="btn btn-rojo">Eliminar después de un Dato X</button>
 <br />
 <br />
 <input type="text" @bind="posicionStr" class="form-control" placeholder="Posición" />
 <br />
-<button @onclick="EliminarEnPosicion" class="btn btn-primary">Eliminar en Posición</button>
-<button @onclick="OrdenarLista" class="btn btn-primary">Ordenar Lista</button>
+<button @onclick="AgregarEnPosicion" class="btn btn-azul-claro">Insertar en Posición</button>
+<button @onclick="AgregarAntesDePosicion" class="btn btn-azul-claro">Insertar antes de Posición</button>
+<button @onclick="AgregarDespuesDePosicion" class="btn btn-azul-claro">Insertar después de Posición</button>
+<br />
+<br />
+<button @onclick="EliminarEnPosicion" class="btn btn-rojo">Eliminar en Posición</button>
+<button @onclick="OrdenarLista" class="btn btn-rojo">Ordenar Lista</button>
 
 <br />
 
@@ -69,6 +79,57 @@
     public void AgregarInicio()
     {
         mensaje = Lista.AgregarNodoInicio(crearNodo());
+    }
+    public void AgregarAntesDatoX()
+    {
+        mensaje = Lista.AgregarAntesDatoX(valorBusqueda, crearNodo());
+    }
+
+    public void AgregarDespuesDatoX()
+    {
+        mensaje = Lista.AgregarDespuesDatoX(valorBusqueda, crearNodo());
+    }
+
+    public void AgregarEnPosicion()
+    {
+        if (int.TryParse(posicionStr, out int posicion))
+        {
+            mensaje = Lista.AgregarEnPosicion(posicion, crearNodo());
+        }
+        else
+        {
+            mensaje = "Posición inválida";
+        }
+    }
+
+    public void AgregarAntesDePosicion()
+    {
+        if (int.TryParse(posicionStr, out int posicion))
+        {
+            mensaje = Lista.AgregarAntesDePosicion(posicion, crearNodo());
+        }
+        else
+        {
+            mensaje = "Posición inválida";
+        }
+    }
+
+    public void AgregarDespuesDePosicion()
+    {
+        if (int.TryParse(posicionStr, out int posicion))
+        {
+            mensaje = Lista.AgregarDespuesDePosicion(posicion, crearNodo());
+        }
+        else
+        {
+            mensaje = "Posición inválida";
+        }
+    }
+
+    public void BuscarElemento()
+    {
+        var nodo = Lista.BuscarElemento(valorBusqueda);
+        mensaje = nodo != null ? $"Elemento encontrado: {nodo.Informacion}" : "Elemento no encontrado";
     }
 
     public void EliminarInicio()
